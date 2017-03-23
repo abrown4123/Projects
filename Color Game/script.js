@@ -4,28 +4,49 @@ var squares = document.querySelectorAll(".square");
 var colorDisplay = document.getElementById('colorDisplay');
 var messageDisplay = document.querySelector('#message');
 var pickedColor = pickColor();
-
+var h1 = document.querySelector("h1");
+var resetButton = document.getElementById("reset");
 colorDisplay.innerHTML = pickedColor;
-console.log(squares);
-for (var i = 0; i < squares.length; i++){
-	
-	//add colors to squares
-	squares[i].style.background = colors[i];
-	//add click listeners
-	squares[i].addEventListener("click", function(){
-		var clickedColor = this.style.background;
-		// determine if it is the correct answer
-		if (clickedColor === pickedColor){
-			console.log("correct");
-			messageDisplay.innerHTML = "Correct!";
-			changeColors(clickedColor);
-		} else {
-			this.style.background = "#232323";
-			messageDisplay.innerHTML = "Try Again";
-		}
-	});
-	
-}
+
+resetButton.addEventListener("click", function(){
+	//reset the button text
+	resetButton.innerHTML = "New Colors";
+	//generate new colors
+	colors = randomColors(6);
+	//pick a new winning color
+	pickedColor = pickColor();
+	//change the color display to picked color
+	colorDisplay.innerHTML = pickedColor;
+	//start new game
+	for (var i = 0; i < squares.length; i++){
+		//add colors to squares
+		squares[i].style.background = colors[i];
+	}
+	//switch h1 background color back
+	h1.style.backgroundColor = "transparent";
+});
+
+
+	for (var i = 0; i < squares.length; i++){
+		//add colors to squares
+		squares[i].style.background = colors[i];
+		//add click listeners
+		squares[i].addEventListener("click", function(){
+			var clickedColor = this.style.background;
+			// determine if it is the correct answer
+			if (clickedColor === pickedColor){
+				console.log("correct");
+				messageDisplay.innerHTML = "Correct!";
+				changeColors(clickedColor);
+				h1.style.backgroundColor = pickedColor;
+				resetButton.innerHTML = "Play Again?";
+			} else {
+				this.style.background = "#232323";
+				messageDisplay.innerHTML = "Try Again";
+			}
+		});		
+	}
+
 
 function changeColors(color){
 	//loop through the square divs
